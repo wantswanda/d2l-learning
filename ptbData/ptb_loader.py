@@ -17,13 +17,14 @@ def load_ptb_data():
     return [line.split() for line in txt.split('\n')]
 
 class Vocab:
-    def __init__(self,tokens,min_freq=0,reserved_tokens=[]):
+    def __init__(self,tokens,min_freq=0,reserved_tokens=[],tokenize=False):
         if tokens and isinstance(tokens[0], list):
             tokens = [token for line in tokens for token in line]
-    
-        tokens_orgin=[token for line in tokens for token in line.split(' ')]
+
+        if not tokenize:
+            tokens=[token for line in tokens for token in line.split(' ')]
         self.idx_to_str=['<unk>']+reserved_tokens
-        tokens_freq=collections.Counter(tokens_orgin)
+        tokens_freq=collections.Counter(tokens)
         tokens_freq=sorted(tokens_freq.items(),key= lambda item:item[1],reverse=True)
 
         for token,freq in tokens_freq:
